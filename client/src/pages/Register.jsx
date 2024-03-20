@@ -12,6 +12,7 @@ import jwtAxios from "../libs/jwtAxios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "../components/LoadingButton";
+import AppProvider from "../components/AppProvider";
 
 const Register = () => {
   const [data, setData] = useState({});
@@ -84,4 +85,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default AppProvider(Register);

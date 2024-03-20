@@ -6,6 +6,7 @@ import { userAtom } from "../context/atoms";
 import { useRecoilState } from "recoil";
 import LoadingButton from "../components/LoadingButton";
 import { toast } from "sonner";
+import AppProvider from "../components/AppProvider";
 
 const Login = () => {
   const [data, setData] = useState({});
@@ -87,4 +88,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AppProvider(Login);

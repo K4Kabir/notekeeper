@@ -17,3 +17,8 @@ export const allNotes = atom({
   key: "allNotes",
   default: null,
 });
+
+export const themeAtom = atom({
+  key: "theme",
+  default: JSON.parse(localStorage.getItem("theme")) ?? true,
+});
