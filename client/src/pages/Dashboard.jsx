@@ -37,7 +37,7 @@ const Dashboard = () => {
   useEffect(() => {
     const getNotes = async () => {
       try {
-        let response = await jwtAxios.get("/Note/getAll");
+        let response = await jwtAxios.get("/Note/getAll?page=1&limit=10");
         if (response.data.success) {
           setSampleNote(response.data.message);
         } else {
@@ -99,6 +99,7 @@ const Dashboard = () => {
             notes={SampleNote}
             setAction={setAction}
             setOpen={setOpen}
+            setNotes={setSampleNote}
           />
           <IconButton
             onClick={() => setMobile(!mobile)}

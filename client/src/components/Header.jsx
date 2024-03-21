@@ -3,18 +3,20 @@ import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { userAtom } from "../context/atoms";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import jwtAxios from "../libs/jwtAxios";
+import { allNotes } from "../context/atoms";
 
 const Header = () => {
   const [user, setUser] = useRecoilState(userAtom);
+  const setAllNote = useSetRecoilState(allNotes);
   return (
     <Box sx={{ height: "4rem" }}>
       <AppBar sx={{ height: "4rem" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box>
             {user.isAuthenticated
-              ? "? Welcome back" + " " + user?.user?.username
+              ? "Welcome back" + " " + user?.user?.username
               : "NoteKeeper"}
           </Box>
           <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
@@ -35,6 +37,9 @@ const Header = () => {
                               user: {},
                             });
                           }
+                        })
+                        .then(() => {
+                          setAllNote([]);
                         })
                         .catch((err) => {
                           alert(err.message);

@@ -11,7 +11,7 @@ const currentTheme = JSON.parse(localStorage.getItem("theme")) || true;
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RecoilRoot>
-      <Toaster position="bottom-left" />
+      <Toaster position="bottom-left" closeButton />
       <ColorProvider>
         <App />
       </ColorProvider>

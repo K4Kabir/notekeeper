@@ -60,8 +60,19 @@ export const updateNote = async (req, res) => {
 
 export const getNotes = async (req, res) => {
   try {
-    const note = await Note.find({ User: req.user });
-    return res.status(200).json({ message: note, success: true });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const offset = (page - 1) * limit;
+
+    const note = await Note.find({ User: req.user }).skip(offset).limit(limit);
+
+    const totalNotesCount = await Note.countDocuments({ User: req.user });
+    const hasMore = offset + note.length < totalNotesCount;
+
+    return res
+      .status(200)
+      .json({ message: note, success: true, hasMore: hasMore });
   } catch (error) {
     return res.status(500).json({ message: error.message, success: false });
   }

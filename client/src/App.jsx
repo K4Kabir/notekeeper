@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./auth/ProtectedRoute";
 const Login = lazy(() => import("./pages/Login"));
@@ -10,8 +10,10 @@ import jwtAxios from "./libs/jwtAxios";
 import Home from "./pages/Home";
 import { themeAtom } from "./context/atoms";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import MainLoader from "./components/loaders/MainLoader";
 function App() {
   const theme = useRecoilValue(themeAtom);
+  const [profileLoading, setProfileLoading] = useState(false);
   const darkTheme = createTheme({
     palette: {
       mode: theme ? "dark" : "light",
@@ -20,8 +22,10 @@ function App() {
 
   useEffect(() => {
     const getUserProfile = async function () {
+      setProfileLoading(true);
       try {
         let res = await jwtAxios.post("/User/me");
+        setProfileLoading(false);
         if (res.data.success) {
           setLoggedInUser({
             isAuthenticated: true,
@@ -38,12 +42,23 @@ function App() {
           isAuthenticated: false,
           user: {},
         });
+        setProfileLoading(false);
       }
     };
     getUserProfile();
   }, []);
 
   const [loggedInUser, setLoggedInUser] = useRecoilState(userAtom);
+
+  if (profileLoading) {
+    return (
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <MainLoader />
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
