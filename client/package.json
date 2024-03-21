@@ -16,6 +16,7 @@
     "@mui/joy": "^5.0.0-beta.29",
     "@mui/lab": "^5.0.0-alpha.168",
     "@mui/material": "^5.15.13",
+    "@tinymce/tinymce-react": "^4.3.2",
     "axios": "^1.6.7",
     "framer-motion": "^11.0.14",
     "jodit-react": "^4.0.15",

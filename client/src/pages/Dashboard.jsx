@@ -34,20 +34,23 @@ const items = [
 const Dashboard = () => {
   const [SampleNote, setSampleNote] = useRecoilState(allNotes);
   const user = useRecoilValue(userAtom);
-  useEffect(() => {
-    const getNotes = async () => {
-      try {
-        let response = await jwtAxios.get("/Note/getAll?page=1&limit=10");
-        if (response.data.success) {
-          setSampleNote(response.data.message);
-        } else {
-          setSampleNote(null);
-        }
-      } catch (error) {
+
+  const getNotes = async (page = 1, limit = 10) => {
+    try {
+      let response = await jwtAxios.get(
+        `/Note/getAll?page=${page}&limit=${limit}`
+      );
+      if (response.data.success) {
+        setSampleNote(response.data.message);
+      } else {
         setSampleNote(null);
       }
-    };
-    getNotes();
+    } catch (error) {
+      setSampleNote(null);
+    }
+  };
+  useEffect(() => {
+    getNotes(1, 10);
   }, []);
 
   const [mobile, setMobile] = useState(false);
@@ -100,6 +103,7 @@ const Dashboard = () => {
             setAction={setAction}
             setOpen={setOpen}
             setNotes={setSampleNote}
+            getNotes={getNotes}
           />
           <IconButton
             onClick={() => setMobile(!mobile)}
@@ -134,7 +138,12 @@ const Dashboard = () => {
         <Drawer open={mobile} onClose={() => setMobile(false)}>
           <SidebarItems w={"50%"} />
         </Drawer>
-        <CreateDialog action={action} open={open} setOpen={setOpen} />
+        <CreateDialog
+          action={action}
+          open={open}
+          getNotes={getNotes}
+          setOpen={setOpen}
+        />
       </Grid>
     </>
   );

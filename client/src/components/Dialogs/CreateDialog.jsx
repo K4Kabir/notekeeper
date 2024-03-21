@@ -1,3 +1,4 @@
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Dialog,
@@ -9,32 +10,18 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import Editor from "../Editor/JoditEditor";
-import CloseIcon from "@mui/icons-material/Close";
-import LoadingButton from "../LoadingButton";
-import { allNotes, noteAtom } from "../../context/atoms";
 import { useRecoilState } from "recoil";
-import jwtAxios from "../../libs/jwtAxios";
 import { toast } from "sonner";
+import { allNotes, noteAtom } from "../../context/atoms";
+import jwtAxios from "../../libs/jwtAxios";
+import EditorTiny from "../Editor/JoditEditor";
+import LoadingButton from "../LoadingButton";
 
-const CreateDialog = ({ action, open, setOpen, setAction }) => {
+const CreateDialog = ({ action, open, setOpen, getNotes }) => {
   const [note, setNote] = useRecoilState(noteAtom);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [SampleNote, setSampleNote] = useRecoilState(allNotes);
-
-  const getNotes = async () => {
-    try {
-      let response = await jwtAxios.get("/Note/getAll");
-      if (response.data.success) {
-        setSampleNote(response.data.message);
-      } else {
-        setSampleNote(null);
-      }
-    } catch (error) {
-      setSampleNote(null);
-    }
-  };
 
   const handleInput = (e) => {
     setNote({
@@ -49,8 +36,8 @@ const CreateDialog = ({ action, open, setOpen, setAction }) => {
       maxWidth={"md"}
       open={open}
       onClose={() => {
-        setOpen(false);
         setNote({});
+        setOpen(false);
         setImage(null);
       }}
     >
@@ -98,7 +85,12 @@ const CreateDialog = ({ action, open, setOpen, setAction }) => {
             <Typography variant="h5">
               {action.add ? "Create" : "Update"}
             </Typography>
-            <IconButton onClick={() => setOpen(false)}>
+            <IconButton
+              onClick={() => {
+                setOpen(false);
+                setNote({});
+              }}
+            >
               <CloseIcon />
             </IconButton>
           </Box>
@@ -114,7 +106,7 @@ const CreateDialog = ({ action, open, setOpen, setAction }) => {
               label="Title"
               type="text"
             />
-            <TextField
+            {/* <TextField
               name="content"
               onChange={(e) => handleInput(e)}
               multiline
@@ -122,11 +114,20 @@ const CreateDialog = ({ action, open, setOpen, setAction }) => {
               value={note.content}
               label="Content"
               type="text"
-            />
+            /> */}
             <input
               accept="jpg jpeg png"
               type="file"
               onChange={(e) => setImage(e.target.files[0])}
+            />
+            <EditorTiny
+              onChange={(data) => {
+                setNote({
+                  ...note,
+                  content: data,
+                });
+              }}
+              value={note?.content}
             />
             {/* <Editor /> */}
             <LoadingButton

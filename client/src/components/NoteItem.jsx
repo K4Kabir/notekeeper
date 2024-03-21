@@ -19,23 +19,9 @@ import moment from "moment";
 import Favourite from "./Favourite";
 import { motion } from "framer-motion";
 
-const NoteItem = ({ note, setOpen, setAction, key }) => {
+const NoteItem = ({ note, setOpen, setAction, getNotes }) => {
   const [loading, setLoading] = useState(false);
-  const [n, setN] = useRecoilState(allNotes);
   const setCreateNote = useSetRecoilState(noteAtom);
-
-  const getNotes = async () => {
-    try {
-      let response = await jwtAxios.get("/Note/getAll");
-      if (response.data.success) {
-        setN(response.data.message);
-      } else {
-        setN(null);
-      }
-    } catch (error) {
-      setN(null);
-    }
-  };
 
   return (
     <motion.div
@@ -88,9 +74,11 @@ const NoteItem = ({ note, setOpen, setAction, key }) => {
             <Typography gutterBottom variant="h5" component="div">
               {note?.title}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {note?.content}
-            </Typography>
+            <Typography
+              dangerouslySetInnerHTML={{ __html: note?.content }}
+              variant="body2"
+              color="text.secondary"
+            ></Typography>
           </CardContent>
         </CardActionArea>
         <Box
