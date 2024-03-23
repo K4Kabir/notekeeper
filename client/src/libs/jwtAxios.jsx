@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const jwtAxios = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: "https://notekeeper-two-vert.vercel.app",
   withCredentials: true,
   //YOUR_API_URL HERE
   headers: {
