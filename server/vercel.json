@@ -3,7 +3,7 @@
   "name": "native-server",
   "builds": [
     {
-      "src": "server.js",
+      "src": "index.js",
       "use": "@vercel/node"
     }
   ],
