@@ -6,8 +6,6 @@ import App from "./App.jsx";
 import ColorProvider from "./context/ColorProvide.jsx";
 import "./index.css";
 
-const currentTheme = JSON.parse(localStorage.getItem("theme")) || true;
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RecoilRoot>
