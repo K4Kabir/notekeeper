@@ -9,7 +9,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "https://notekeeper-frontend-zeta.vercel.app",
+    origin: "https://notekeeper-frontend-zeta.vercel.app/",
   })
 );
 app.use(cookieParser());
