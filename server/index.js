@@ -6,7 +6,12 @@ import Note from "./routes/note.routes.js";
 import cookieParser from "cookie-parser";
 
 const app = express();
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://notekeeper-frontend-zeta.vercel.app",
+  })
+);
 app.use(cookieParser());
 
 connect();
